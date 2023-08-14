@@ -7,12 +7,23 @@ const app = express();
 
 // Define CORS options
 let corsOptions = {
-    origin: ['https://localhost', 'https://www.github.io', 'https://jakobzhao.github.io'],
-    optionsSuccessStatus: 200
+    origin: ["http://localhost:3000", "https://participatory-map-e1663db63ec0.herokuapp.com"],
+    optionsSuccessStatus: 200,
+    credentials: true,
+    method: ['GET, POST'],
+    // allowedHeaders: '*',
+    // credentials: true,
+    // origin: true
+    // origin: 'http://localhost:3000'
+    // origin: "*",
+    // "methods": "GET,HEAD,PUT,PATCH,POST,DELETE",
+    // "preflightContinue": false,
+    // "optionsSuccessStatus": 200
 }
 
 // Enable CORS for the application using the defined options
 app.use(cors(corsOptions));
+// app.use(cors())
 
 // Enable parsing of URL-encoded data
 app.use(express.urlencoded({ extended: true }));
