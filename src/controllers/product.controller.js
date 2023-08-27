@@ -9,7 +9,7 @@ const json2csvParser = new Parser();
 //  */
 // getRecords: Obtains all records
 exports.getRecord = async(req, res) => {//
-    const response = await db.query('SELECT * FROM "tblRecord" ORDER BY id ASC');//
+    const response = await db.query('SELECT * FROM "approved" ORDER BY id ASC');// changed from 'tblRecord' to 'approved'
     const json = JSON.stringify(response);
     res.status(200).send(json);//
 };//
