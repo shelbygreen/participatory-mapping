@@ -2,9 +2,9 @@
 <html>
 
 <head>
-    <title>A Minimum Viable Participatory Mapping Project</title>
-    <script src="https://unpkg.com/maplibre-gl@3.1.0/dist/maplibre-gl.js"></script>
-    <link href="https://unpkg.com/maplibre-gl@3.1.0/dist/maplibre-gl.css" rel="stylesheet" />
+    <title>Tour of Europe</title>
+    <script src="https://api.mapbox.com/mapbox-gl-js/v2.14.1/mapbox-gl.js"></script>
+    <link href="https://api.mapbox.com/mapbox-gl-js/v2.14.1/mapbox-gl.css" rel="stylesheet" />
     <!-- Styles for the map and popup -->
     <style>
         /* Basic CSS for the page */
@@ -64,7 +64,7 @@
     
     <!-- Information box -->
     <div id="info">
-        <h3>Tallahassee Memories</h3>
+        <h3>Tour of Europe</h3>
         </p> 
     </div>
     
@@ -78,12 +78,23 @@
             'type': 'FeatureCollection',
             'features': []
         };
+
+        // Set Mapbox Access Token
+        const apiKey = "pk.eyJ1Ijoic2hlbGJ5LWdyZWVuIiwiYSI6ImNrMHNobWdrNTAwZW8zYnA5czQ5cWh4ankifQ.TWYVyG-n0cmhTGvKg31eow";
+        if (apiKey) {
+            mapboxgl.accessToken = apiKey
+        }
+
+        // error: can't get this to work
+        // mapboxgl.accessToken = process.env.REACT_APP_MAPBOX_TOKEN;
         
         // Create a new map instance
-        let map = new maplibregl.Map({
+        let map = new mapboxgl.Map({
             container: 'map', // container id
-            style: 'https://api.maptiler.com/maps/streets-v2/style.json?key=Cusoe5zmfmn26glFoeoe', // style URL
-            center: [-84.2807122063325, 30.438343138056762], // starting position [lng, lat]
+            style: 'mapbox://styles/mapbox/streets-v12', // style URL
+            center: [-0.12635145983041324, 51.50898097764747], // starting position [lng, lat]
+            // tallahassee: -84.2807122063325
+            // london: 51.50898097764747, -0.12635145983041324
             // pitch: 45, // pitch in degrees
             zoom: 12 // starting zoom
         });
@@ -131,6 +142,19 @@
             });
         });
 
+        // Add geolocate control to the map
+        map.addControl(
+            new mapboxgl.GeolocateControl({
+                positionOptions: {
+                    enableHighAccuracy: true
+                },
+            // When active the map will receive updates to the device's location as it changes.
+            trackUserLocation: true,
+            // Draw an arrow next to the location dot to indicate which direction the device is heading.
+            showUserHeading: true
+            })
+        );
+
         // Show popup on mouse enter over an existing point
         map.on('mouseenter', 'placesLayer', function (e) {
             map.getCanvas().style.cursor = 'pointer';
@@ -139,7 +163,7 @@
             var content = e.features[0].properties.content;
             var contributor = e.features[0].properties.contributor;
 
-            popup = new maplibregl.Popup()
+            popup = new mapboxgl.Popup()
                 .setLngLat(coordinates)
                 .setHTML("<p><b>" + contributor + "</b> <i>said:</i> " + content + "</p>")
                 .addTo(map);
@@ -161,7 +185,7 @@
             const popupContent = '<div id="popup"><input type="text" id="name" placeholder="Input your name here..."><input type="text" id="content" placeholder="Input your message here..."><button id="submit">submit</button></div>';
 
             // Create a new popup and set its content
-            popup = new maplibregl.Popup({ closeOnClick: false })
+            popup = new mapboxgl.Popup({ closeOnClick: false })
                 .setLngLat(e.lngLat)
                 .setHTML(popupContent)
                 .addTo(map);

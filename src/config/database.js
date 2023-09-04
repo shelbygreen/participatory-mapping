@@ -1,6 +1,7 @@
 // Import the required module
 const { Pool } = require('pg');
 
+
 // Create a new instance of the Pool object with the database connection configuration
 const pool = new Pool({
     connectionString: process.env.DATABASE_URL,
